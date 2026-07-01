@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Powrotu — Twój plan powrotu do Polski z UK</title>
+<meta name="description" content="Wracasz do Polski z UK? Plan Powrotu tworzy Twój osobisty plan powrotu: podatki, ZUS, samochód, mieszkanie, szkoła dla dzieci. Zapisz się na wczesny dostęp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6EF;
+    --paper-warm:#F3ECDD;
+    --ink:#1F2530;
+    --ink-soft:#4A5160;
+    --red:#A8323A;
+    --red-deep:#7E2530;
+    --brass:#C9A24B;
+    --slate:#7C8694;
+    --line:#DCD3BE;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:'Fraunces',serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* texture: faint paper grain via subtle radial dots */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:radial-gradient(rgba(31,37,48,0.035) 1px, transparent 1px);
+    background-size:3px 3px;
+    opacity:0.6;
+  }
+
+  header{
+    position:relative; z-index:2;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:28px 24px 0;
+    max-width:1080px; margin:0 auto;
+  }
+  .logo{
+    font-family:'Fraunces',serif; font-weight:600; font-size:1.18rem;
+    letter-spacing:-0.01em;
+    display:flex; align-items:center; gap:10px;
+    white-space:nowrap;
+  }
+  .logo-mark{
+    width:28px;height:28px;border-radius:3px;
+    background:var(--red);
+    display:inline-flex;align-items:center;justify-content:center;
+    color:var(--paper); font-family:'JetBrains Mono',monospace; font-size:0.7rem; font-weight:600;
+    transform:rotate(-4deg);
+  }
+  .lang-toggle{
+    display:flex; gap:2px; background:var(--paper-warm);
+    border:1px solid var(--line); border-radius:20px; padding:3px;
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem;
+  }
+  .lang-toggle button{
+    border:none; background:transparent; padding:6px 13px; border-radius:16px;
+    cursor:pointer; color:var(--ink-soft); font-family:inherit; font-size:inherit;
+    transition:all .15s ease;
+  }
+  .lang-toggle button.active{ background:var(--ink); color:var(--paper); }
+
+  main{position:relative; z-index:2;}
+
+  .hero{
+    padding:72px 24px 40px;
+    max-width:1080px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:center;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:0.78rem; letter-spacing:0.06em;
+    color:var(--red-deep); text-transform:uppercase; margin:0 0 18px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{content:''; width:18px; height:1px; background:var(--red-deep);}
+  h1{
+    font-family:'Fraunces',serif; font-weight:600; font-size:3.1rem; line-height:1.05;
+    letter-spacing:-0.015em; margin:0 0 22px; color:var(--ink);
+  }
+  h1 em{ font-style:italic; color:var(--red); font-weight:500; }
+  .sub{
+    font-size:1.13rem; color:var(--ink-soft); max-width:480px; margin:0 0 32px;
+  }
+
+  .waitlist-form{
+    display:flex; gap:10px; max-width:460px; margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  .waitlist-form input[type=email]{
+    flex:1 1 240px; padding:15px 18px; border-radius:8px;
+    border:1.5px solid var(--line); background:#fff;
+    font-family:'Inter',sans-serif; font-size:0.98rem; color:var(--ink);
+    outline:none; transition:border-color .15s ease;
+  }
+  .waitlist-form input[type=email]:focus{ border-color:var(--red); }
+  .waitlist-form button{
+    padding:15px 26px; border-radius:8px; border:none;
+    background:var(--red); color:#fff; font-weight:600; font-size:0.98rem;
+    cursor:pointer; font-family:'Inter',sans-serif;
+    transition:background .15s ease, transform .1s ease;
+    white-space:nowrap;
+  }
+  .waitlist-form button:hover{ background:var(--red-deep); }
+  .waitlist-form button:active{ transform:scale(0.98); }
+  .form-note{ font-size:0.83rem; color:var(--slate); }
+  .form-success{
+    display:none; align-items:center; gap:10px;
+    background:#EFF3EA; border:1px solid #C7D6BD; border-radius:8px;
+    padding:14px 18px; color:#3A5A2C; font-size:0.95rem; max-width:460px;
+  }
+
+  /* signature element: boarding-pass style checklist stub */
+  .stub{
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:0;
+    position:relative;
+    box-shadow:0 18px 40px -16px rgba(31,37,48,0.18);
+    overflow:hidden;
+    transform:rotate(1.2deg);
+  }
+  .stub-top{
+    padding:22px 24px 18px;
+    border-bottom:1.5px dashed var(--line);
+    position:relative;
+  }
+  .stub-top::before, .stub-top::after{
+    content:''; position:absolute; width:18px; height:18px; border-radius:50%;
+    background:var(--paper); bottom:-9px;
+  }
+  .stub-top::before{ left:-9px; }
+  .stub-top::after{ right:-9px; }
+  .stub-route{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .stub-city{ font-size:1.5rem; font-weight:600; letter-spacing:-0.02em; }
+  .stub-arrow{ color:var(--brass); font-size:1.1rem; }
+  .stub-label{ font-size:0.66rem; color:var(--slate); text-transform:uppercase; letter-spacing:0.05em; margin-top:4px; }
+  .stub-body{ padding:24px; }
+  .check-item{
+    display:flex; align-items:flex-start; gap:11px;
+    padding:10px 0; border-bottom:1px solid #F0EADD;
+    font-size:0.92rem;
+  }
+  .check-item:last-child{ border-bottom:none; }
+  .check-box{
+    width:18px; height:18px; border-radius:4px; border:1.5px solid var(--line);
+    flex:none; margin-top:1px; position:relative; transition:all .4s ease;
+  }
+  .check-box.done{ background:var(--red); border-color:var(--red); }
+  .check-box.done::after{
+    content:''; position:absolute; left:4px; top:1px; width:5px; height:9px;
+    border:solid #fff; border-width:0 2px 2px 0; transform:rotate(40deg);
+  }
+  .check-text{ color:var(--ink-soft); }
+  .check-text strong{ color:var(--ink); font-weight:600; }
+  .check-deadline{
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--brass);
+    margin-left:auto; flex:none; padding-top:1px; white-space:nowrap;
+  }
+
+  .trust-strip{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:28px 24px; margin-top:24px;
+  }
+  .trust-row{
+    max-width:1080px; margin:0 auto;
+    display:flex; gap:40px; flex-wrap:wrap; justify-content:space-between;
+    font-size:0.88rem; color:var(--ink-soft);
+  }
+  .trust-row b{ color:var(--ink); font-family:'Fraunces',serif; font-size:1.4rem; display:block; font-weight:600;}
+
+  .section{ padding:80px 24px; max-width:1080px; margin:0 auto; }
+  .section-head{ max-width:560px; margin-bottom:48px; }
+  .section-eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--red-deep);
+    text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px;
+  }
+  h2{
+    font-family:'Fraunces',serif; font-weight:600; font-size:2.1rem; letter-spacing:-0.01em;
+    margin:0 0 14px;
+  }
+  .section-sub{ color:var(--ink-soft); font-size:1.04rem; }
+
+  .problem-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+  }
+  .problem-card{
+    background:var(--paper-warm); border:1px solid var(--line); border-radius:10px;
+    padding:26px;
+  }
+  .problem-card .num{
+    font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--brass);
+    margin-bottom:14px; display:block;
+  }
+  .problem-card h3{
+    font-family:'Fraunces',serif; font-size:1.15rem; font-weight:600; margin:0 0 8px;
+  }
+  .problem-card p{ color:var(--ink-soft); font-size:0.92rem; margin:0; }
+
+  .module-list{ display:flex; flex-direction:column; gap:0; border-top:1px solid var(--line); }
+  .module-row{
+    display:grid; grid-template-columns:160px 1fr auto; gap:24px; align-items:center;
+    padding:22px 0; border-bottom:1px solid var(--line);
+  }
+  .module-tag{
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem; text-transform:uppercase;
+    color:var(--red-deep); letter-spacing:0.04em;
+  }
+  .module-row h4{ font-family:'Fraunces',serif; font-weight:600; font-size:1.1rem; margin:0 0 4px; }
+  .engine-tag{
+    font-family:'JetBrains Mono',monospace; font-weight:500; font-size:0.66rem;
+    color:var(--brass); border:1px solid var(--brass); border-radius:10px;
+    padding:2px 8px; margin-left:8px; text-transform:uppercase; letter-spacing:0.03em;
+    vertical-align:middle; white-space:nowrap;
+  }
+  .module-row p{ color:var(--ink-soft); font-size:0.88rem; margin:0; }
+  .module-status{
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--slate);
+    white-space:nowrap;
+  }
+
+  .cta-band{
+    background:var(--ink); color:var(--paper);
+    border-radius:18px; padding:64px 48px; text-align:center;
+    margin:40px 24px 0; max-width:1032px; margin-left:auto; margin-right:auto;
+  }
+  .cta-band h2{ color:var(--paper); }
+  .cta-band .section-sub{ color:#B7BECB; max-width:480px; margin:0 auto 32px; }
+  .cta-band .waitlist-form{ margin:0 auto 14px; justify-content:center; }
+  .cta-band .form-note{ color:#8B93A3; }
+  .cta-band .form-success{ margin:0 auto; }
+
+  footer{
+    padding:36px 24px 48px; max-width:1080px; margin:0 auto;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:0.82rem; color:var(--slate); flex-wrap:wrap; gap:12px;
+  }
+
+  [data-en]{ display:none; }
+  html[data-lang="en"] [data-pl]{ display:none; }
+  html[data-lang="en"] [data-en]{ display:inline; }
+  html[data-lang="en"] [data-en].block{ display:block; }
+
+  @media (max-width:880px){
+    .hero{ grid-template-columns:1fr; padding-top:48px; }
+    h1{ font-size:2.2rem; }
+    .problem-grid{ grid-template-columns:1fr; }
+    .module-row{ grid-template-columns:1fr; gap:6px; }
+    .module-status{ display:none; }
+    .stub{ transform:none; }
+    .cta-band{ padding:48px 24px; margin-left:12px; margin-right:12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header>
+  <div class="logo">
+    <span class="logo-mark">PL</span>
+    Plan Powrotu
+  </div>
+  <div class="lang-toggle">
+    <button id="btn-pl" class="active" onclick="setLang('pl')">PL</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <p class="eyebrow"><span data-pl>Wczesny dostęp</span><span data-en>Early access</span></p>
+      <h1>
+        <span data-pl>Wracasz do Polski? <em>Wiemy od czego zacząć.</em></span>
+        <span data-en>Moving back to Poland? <em>We'll show you where to start.</em></span>
+      </h1>
+      <p class="sub">
+        <span data-pl>Plan Powrotu zamienia chaos powrotu z UK — podatki, ZUS, samochód, mieszkanie, szkoła — w jedną, osobistą listę z terminami. Zapisz się, a wpuścimy Cię jako jednych z pierwszych.</span>
+        <span data-en>Plan Powrotu turns the chaos of moving back from the UK — taxes, ZUS, your car, your flat, school for the kids — into one personal checklist with real deadlines. Join the list and we'll let you in first.</span>
+      </p>
+
+      <form class="waitlist-form" id="waitlist-form" onsubmit="return handleSubmit(event)">
+        <input type="email" id="email-input" placeholder="twoj@email.com" data-pl-placeholder="twoj@email.com" data-en-placeholder="you@email.com" required>
+        <button type="submit"><span data-pl>Zapisz mnie</span><span data-en>Notify me</span></button>
+      </form>
+      <div class="form-success" id="form-success">
+        <span>✓</span>
+        <span><span data-pl>Dzięki — odezwiemy się, gdy będzie gotowe.</span><span data-en>Thanks — we'll be in touch when it's ready.</span></span>
+      </div>
+      <p class="form-note">
+        <span data-pl>Bezpłatnie. Bez spamu. Jeden e-mail, gdy wystartujemy.</span>
+        <span data-en>Free. No spam. One email, when we launch.</span>
+      </p>
+    </div>
+
+    <div class="stub">
+      <div class="stub-top">
+        <div class="stub-route">
+          <div>
+            <div class="stub-city">LON</div>
+            <div class="stub-label" data-pl>Skąd wracasz</div>
+            <div class="stub-label" data-en>Coming from</div>
+          </div>
+          <div class="stub-arrow">→</div>
+          <div style="text-align:right">
+            <div class="stub-city">WAW</div>
+            <div class="stub-label" data-pl>Twój plan</div>
+            <div class="stub-label" data-en>Your plan</div>
+          </div>
+        </div>
+      </div>
+      <div class="stub-body" id="checklist-demo">
+        <div class="check-item">
+          <div class="check-box" data-step="0"></div>
+          <div class="check-text"><span data-pl><strong>Zgłoszenie</strong> wyjazdu do ZUS / HMRC</span><span data-en><strong>Notify</strong> ZUS and HMRC of your move</span></div>
+          <div class="check-deadline" data-pl>30 DNI</div><div class="check-deadline" data-en>30 DAYS</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box" data-step="1"></div>
+          <div class="check-text"><span data-pl><strong>Ulga na powrót</strong> — sprawdź, czy się kwalifikujesz</span><span data-en><strong>Returnee tax relief</strong> — check eligibility</span></div>
+          <div class="check-deadline" data-pl>PRZED WYJAZDEM</div><div class="check-deadline" data-en>BEFORE YOU LEAVE</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box" data-step="2"></div>
+          <div class="check-text"><span data-pl><strong>Rejestracja</strong> samochodu z UK</span><span data-en><strong>Register</strong> your UK car</span></div>
+          <div class="check-deadline" data-pl>30 DNI</div><div class="check-deadline" data-en>30 DAYS</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box" data-step="3"></div>
+          <div class="check-text"><span data-pl><strong>NFZ</strong> — przywrócenie ubezpieczenia zdrowotnego</span><span data-en><strong>NFZ</strong> — restore healthcare coverage</span></div>
+          <div class="check-deadline" data-pl>PO PRZYJEŹDZIE</div><div class="check-deadline" data-en>ON ARRIVAL</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box" data-step="4"></div>
+          <div class="check-text"><span data-pl><strong>Transfer</strong> emerytury / oszczędności</span><span data-en><strong>Transfer</strong> pension or savings</span></div>
+          <div class="check-deadline" data-pl>WG SYTUACJI</div><div class="check-deadline" data-en>VARIES</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="trust-row">
+      <div><b>700k+</b><span data-pl>Polaków urodzonych w UK (Anglia i Walia)</span><span data-en>Poland-born residents in England & Wales</span></div>
+      <div><b>91%</b><span data-pl>regularnie wysyła pieniądze do rodziny w Polsce</span><span data-en>regularly send money home to family</span></div>
+      <div><b>0 zł</b><span data-pl>za podstawową listę kontrolną — zawsze</span><span data-en>for the basic checklist — always free</span></div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="section-eyebrow"><span data-pl>Problem</span><span data-en>The problem</span></p>
+      <h2><span data-pl>Powrót to nie jeden formularz. To dziesiątki.</span><span data-en>Moving back isn't one form. It's dozens.</span></h2>
+      <p class="section-sub"><span data-pl>Dziś ta wiedza jest rozsiana po grupach na Facebooku, starych poradnikach i drogich konsultacjach. Nikt nie mówi Ci, co dotyczy konkretnie Ciebie.</span><span data-en>Right now this knowledge is scattered across Facebook groups, outdated guides, and expensive consultations. Nobody tells you what actually applies to your situation.</span></p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <span class="num">01</span>
+        <h3><span data-pl>Dwa systemy podatkowe</span><span data-en>Two tax systems</span></h3>
+        <p><span data-pl>Rezydencja, ulga na powrót, podwójne opodatkowanie — przepisy UK i PL nie mówią ze sobą.</span><span data-en>Residency, returnee relief, double taxation — UK and Polish rules don't talk to each other.</span></p>
+      </div>
+      <div class="problem-card">
+        <span class="num">02</span>
+        <h3><span data-pl>Terminy, które kosztują</span><span data-en>Deadlines that cost you</span></h3>
+        <p><span data-pl>Spóźniona rejestracja auta czy zgłoszenie do ZUS to realne kary, nie tylko stres.</span><span data-en>A late car registration or ZUS notification means real penalties, not just stress.</span></p>
+      </div>
+      <div class="problem-card">
+        <span class="num">03</span>
+        <h3><span data-pl>Każda sytuacja jest inna</span><span data-en>Every situation differs</span></h3>
+        <p><span data-pl>Dzieci, dom w UK, emerytura, własny biznes — ogólny poradnik nie pasuje do Twojego przypadku.</span><span data-en>Kids, a UK property, a pension, your own business — a generic guide doesn't fit your case.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="section-eyebrow"><span data-pl>Co dostajesz</span><span data-en>What you get</span></p>
+      <h2><span data-pl>Jeden plan, zbudowany na Twojej sytuacji</span><span data-en>One plan, built around your situation</span></h2>
+      <p class="section-sub"><span data-pl>Odpowiadasz na kilka pytań. <strong>Powrotnik</strong> — generator Plan Powrotu — układa Twoją osobistą listę, etapami: przed wyjazdem, pierwsze dni, pierwszy rok.</span><span data-en>Answer a few questions. <strong>Powrotnik</strong> — the engine behind Plan Powrotu — builds your personal checklist in phases: before you leave, the first days, the first year.</span></p>
+    </div>
+    <div class="module-list">
+      <div class="module-row">
+        <span class="module-tag" data-pl>BEZPŁATNE</span><span class="module-tag" data-en>FREE</span>
+        <div>
+          <h4><span data-pl>Lista kontrolna <span class="engine-tag">Powrotnik</span></span><span data-en>The checklist <span class="engine-tag">Powrotnik</span></span></h4>
+          <p><span data-pl>Spersonalizowana, etapowa, z linkami do właściwych formularzy.</span><span data-en>Personalized, phased, linked to the right official forms.</span></p>
+        </div>
+        <span class="module-status" data-pl>OD STARTU</span><span class="module-status" data-en>FROM LAUNCH</span>
+      </div>
+      <div class="module-row">
+        <span class="module-tag" data-pl>PŁATNE</span><span class="module-tag" data-en>PAID</span>
+        <div>
+          <h4><span data-pl>Kalkulator podatkowy UK ↔ PL</span><span data-en>UK ↔ PL tax calculator</span></h4>
+          <p><span data-pl>Rezydencja podatkowa, ulga na powrót, szacunkowe zobowiązania.</span><span data-en>Tax residency, returnee relief eligibility, estimated obligations.</span></p>
+        </div>
+        <span class="module-status" data-pl>FAZA 2</span><span class="module-status" data-en>PHASE 2</span>
+      </div>
+      <div class="module-row">
+        <span class="module-tag" data-pl>PŁATNE</span><span class="module-tag" data-en>PAID</span>
+        <div>
+          <h4><span data-pl>Pakiet PDF do druku</span><span data-en>Printable PDF action pack</span></h4>
+          <p><span data-pl>Twoja pełna lista z terminami, gotowa do druku albo telefonu.</span><span data-en>Your full checklist with deadlines, ready for print or your phone.</span></p>
+        </div>
+        <span class="module-status" data-pl>FAZA 2</span><span class="module-status" data-en>PHASE 2</span>
+      </div>
+      <div class="module-row">
+        <span class="module-tag" data-pl>WKRÓTCE</span><span class="module-tag" data-en>COMING</span>
+        <div>
+          <h4><span data-pl>Mieszkanie, emerytura, samochód, szkoła</span><span data-en>Property, pension, car, school</span></h4>
+          <p><span data-pl>Pełne moduły krok po kroku dla każdego większego tematu powrotu.</span><span data-en>Full step-by-step modules for every major part of the move.</span></p>
+        </div>
+        <span class="module-status" data-pl>FAZA 3</span><span class="module-status" data-en>PHASE 3</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2><span data-pl>Bądź pierwszy, gdy wystartujemy</span><span data-en>Be first when we launch</span></h2>
+    <p class="section-sub"><span data-pl>Zero zobowiązań. Jeden e-mail. Wczesny dostęp dla osób z listy.</span><span data-en>No commitment. One email. Early access for everyone on the list.</span></p>
+    <form class="waitlist-form" onsubmit="return handleSubmit(event, true)">
+      <input type="email" id="email-input-2" placeholder="twoj@email.com" required>
+      <button type="submit"><span data-pl>Zapisz mnie</span><span data-en>Notify me</span></button>
+    </form>
+    <div class="form-success" id="form-success-2">
+      <span>✓</span>
+      <span><span data-pl>Dzięki — jesteś na liście.</span><span data-en>Thanks — you're on the list.</span></span>
+    </div>
+    <p class="form-note"><span data-pl>Bezpłatnie. Bez spamu.</span><span data-en>Free. No spam.</span></p>
+  </div>
+
+  <footer>
+    <div><span data-pl>Plan Powrotu — budowane dla Polaków wracających z UK.</span><span data-en>Plan Powrotu — built for Poles moving back from the UK.</span></div>
+    <div data-pl>To nie jest porada prawna ani podatkowa.</div>
+    <div data-en>This is not legal or tax advice.</div>
+  </footer>
+</main>
+
+<script>
+function setLang(lang){
+  document.documentElement.setAttribute('data-lang', lang);
+  document.getElementById('btn-pl').classList.toggle('active', lang === 'pl');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  var input1 = document.getElementById('email-input');
+  if(input1){ input1.placeholder = lang === 'pl' ? 'twoj@email.com' : 'you@email.com'; }
+  localStorage.setItem('planpowrotu-lang', lang);
+}
+(function(){
+  var saved = localStorage.getItem('planpowrotu-lang');
+  if(saved){ setLang(saved); }
+})();
+
+function handleSubmit(e, isSecond){
+  e.preventDefault();
+  var formId = isSecond ? 'form-success-2' : 'form-success';
+  var formEl = e.target;
+  // Placeholder: wire this input to a real waitlist backend (e.g. a simple
+  // Supabase table + insert call, or a form service) before going live.
+  formEl.style.display = 'none';
+  document.getElementById(formId).style.display = 'flex';
+  return false;
+}
+
+// Signature moment: checklist ticks itself off once, on load.
+window.addEventListener('load', function(){
+  var boxes = document.querySelectorAll('#checklist-demo .check-box');
+  boxes.forEach(function(box, i){
+    setTimeout(function(){ box.classList.add('done'); }, 500 + i * 450);
+  });
+});
+</script>
+
+</body>
+</html>
